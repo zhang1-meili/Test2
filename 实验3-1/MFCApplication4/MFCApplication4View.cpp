@@ -85,11 +85,11 @@ CMFCApplication4Doc* CMFCApplication4View::GetDocument() const // 非调试版本是内
 void CMFCApplication4View::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	CRect cr;
-	this->GetClientRect(&cr);
+	CRect clientRec;
+	GetClientRect(&clientRec);
 	CClientDC dc(this);
+	int r = (clientRec.top - clientRec.bottom) / 2;
+	CRect cr(point.x - r, point.y - r, point.x + r, point.y + r);
 	dc.Ellipse(cr);
-
-
 	CView::OnLButtonDown(nFlags, point);
 }

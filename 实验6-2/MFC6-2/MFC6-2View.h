@@ -19,6 +19,7 @@ public:
 public:int N;
  CArray <CRect, CRect> cr;
  bool set;
+ CArray <boolean, boolean> a;
 // 重写
 public:
 	virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图

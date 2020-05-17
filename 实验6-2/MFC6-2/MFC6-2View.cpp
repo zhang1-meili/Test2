@@ -70,6 +70,8 @@ void CMFC62View::OnDraw(CDC* pDC)
 	for (int i = 0; i < N; i++)
 	{
 		pDC->Ellipse(cr[i]);
+		bool b = true;
+		a.Add(b);
 	}
 	// TODO: 在此处为本机数据添加绘制代码
 }
@@ -102,9 +104,20 @@ CMFC62Doc* CMFC62View::GetDocument() const // 非调试版本是内联的
 void CMFC62View::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	CRect clientRec;
+	GetClientRect(&clientRec);
 	int i = nIDEvent;
+	if(a[i]){
 	cr[i].top += 10;
 	cr[i].bottom += 10;
+	if (cr[i].bottom >= clientRec.bottom)
+		a[i] = false;
+	}
+	else
+	{
+		cr[i].top -= 10;
+		cr[i].bottom -= 10;
+	}
 	Invalidate();
 	CView::OnTimer(nIDEvent);
 }

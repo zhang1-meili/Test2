@@ -51,12 +51,12 @@ BOOL CMFC101View::PreCreateWindow(CREATESTRUCT& cs)
 void CMFC101View::OnDraw(CDC* pDC)
 {
 	CMFC101Doc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
-	CRect c1(300, 300, 500, 200);
-	pDC->Rectangle(&c1);
-
+	CRect cr;
+	cr.top = 20; cr.left = 20;
+	cr.bottom = 100; cr.right = 300;
+	CClientDC dc(this);
+	dc.Rectangle(cr);
+	dc.TextOutW(21, 50, pDoc->s);
 	// TODO: 在此处为本机数据添加绘制代码
 }
 
@@ -87,45 +87,15 @@ CMFC101Doc* CMFC101View::GetDocument() const // 非调试版本是内联的
 
 void CMFC101View::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	CClientDC viewDC(this);
-	TEXTMETRIC txtm;
-	viewDC.GetTextMetrics(&txtm);
-
-	if (0x0D == nChar) {
-		m_strLen.Empty();
-		m_point.y += txtm.tmHeight;
-		SetCaretPos(m_point);
-	}
-	else if (0x08 == nChar) {
-		COLORREF precolor = viewDC.SetTextColor(viewDC.GetBkColor());
-
-		viewDC.TextOutW(m_point.x, m_point.y, m_strLen);
-		m_strLen = m_strLen.Left(m_strLen.GetLength() - 1);
-
-	}
-	else {
-		//字符类型转换??CString??str;?
-		CString str;
-		str.Format(_T("%c"), nChar);
-		m_strLen += str;
-
-	}
-
-	CSize m_size = viewDC.GetTextExtent(m_strLen);
-	CPoint point;
-
-	point.x = m_point.x + m_size.cx;
-	point.y = m_point.y;
-
-	SetCaretPos(point);
-
-	viewDC.TextOut(m_point.x, m_point.y, m_strLen);
-
+	CMFC101Doc* pDoc = GetDocument();
+	CString str;
+	pDoc->s += (wchar_t)nChar;
+	Invalidate();
 	CView::OnChar(nChar, nRepCnt, nFlags);
 }
 
 
-int CMFC101View::OnCreate(LPCREATESTRUCT lpCreateStruct)
+/*int CMFC101View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -149,3 +119,4 @@ void CMFC101View::OnLButtonDown(UINT nFlags, CPoint point)
 	m_point = point;
 	CView::OnLButtonDown(nFlags, point);
 }
+*/

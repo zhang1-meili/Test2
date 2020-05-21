@@ -41,8 +41,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	//afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	//afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // MFC10-1View.cpp 中的调试版本

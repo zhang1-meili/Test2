@@ -18,7 +18,12 @@ public:
 // 操作
 public:CPoint m_point;
 	   CString m_strLen;
-
+	   CString ss[12];
+	   CPoint point1;
+	   CString s;
+	   int i;
+	   int a;
+	   int flag;
 // 重写
 public:
 	virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
@@ -39,7 +44,7 @@ protected:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	//afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

@@ -33,6 +33,9 @@ END_MESSAGE_MAP()
 CMFC102View::CMFC102View()
 {
 	// TODO: 在此处添加构造代码
+	i = 0;
+	a = 0;
+	flag = 1;
 
 }
 
@@ -56,7 +59,12 @@ void CMFC102View::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
+	CClientDC dc(this);
+	for (int i = 0; i < 12; i++) {
+		dc.TextOutW(0 + 35*i, 0, ss[i]);
+	}
+	
+	
 	// TODO: 在此处为本机数据添加绘制代码
 }
 
@@ -85,59 +93,23 @@ CMFC102Doc* CMFC102View::GetDocument() const // 非调试版本是内联的
 // CMFC102View 消息处理程序
 
 
-int CMFC102View::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (CView::OnCreate(lpCreateStruct) == -1)
-		return -1;
-	CClientDC dc(this);
-	TEXTMETRIC tm;
-	dc.GetTextMetrics(&tm);
-	//创建实体光标并显示?
-	CreateSolidCaret(tm.tmAveCharWidth/8, tm.tmHeight);
-	ShowCaret();
-	// TODO:  在此添加您专用的创建代码
-
-	return 0;
-}
-
 
 void CMFC102View::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	CClientDC viewDC(this);
-	TEXTMETRIC txtm;
-	viewDC.GetTextMetrics(&txtm);
 	
-	if (0x0D== nChar) {
-		m_strLen.Empty();
-		m_point.y+=txtm.tmHeight;
-		SetCaretPos(m_point);
+	CClientDC dc(this);
+	if(flag==1){
+	ss[i]= (wchar_t)nChar;
+	i++;
+	Invalidate();
 	}
-	else if (0x08== nChar) {
-		COLORREF precolor = viewDC.SetTextColor(viewDC.GetBkColor());
-
-		viewDC.TextOutW(m_point.x, m_point.y,m_strLen);
-		m_strLen = m_strLen.Left(m_strLen.GetLength() - 1);
-		
+	if (flag == 0)
+	{
+		ss[a+1]= (wchar_t)nChar;
+		Invalidate();	
+	   
 	}
-	else {
-		//字符类型转换??CString??str;?
-		CString str;
-		str.Format(_T("%c"), nChar);
-		m_strLen+=str;
-		
-	}
-
-	CSize m_size = viewDC.GetTextExtent(m_strLen);
-	CPoint point;
-
-	point.x = m_point.x + m_size.cx;
-	point.y = m_point.y;
-
-	SetCaretPos(point);
-
-	viewDC.TextOut(m_point.x, m_point.y, m_strLen);
-	
 	
 	CView::OnChar(nChar, nRepCnt, nFlags);
 }
@@ -154,7 +126,15 @@ void CMFC102View::OnMButtonDown(UINT nFlags, CPoint point)
 void CMFC102View::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	SetCaretPos(point);
-	m_point = point;
-	CView::OnLButtonDown(nFlags, point);
+	CMFC102Doc* pDoc = GetDocument();
+	CClientDC dc(this);
+	
+	point1.x = point.x;
+	point1.y = point.y;
+	a = point1.x /35;
+	CString c,c2;
+	c = ss[a];
+	c2 = ss[a + 1];
+	ss[a + 3] =c2;
+	flag = 0;
 }
